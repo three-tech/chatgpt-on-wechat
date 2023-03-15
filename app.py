@@ -4,7 +4,6 @@ import config
 from channel import channel_factory
 from common.log import logger
 
-
 if __name__ == '__main__':
     try:
         # load config

@@ -48,7 +48,7 @@ class WechatChannel(Channel):
         itchat.run()
 
     def handle_voice(self, msg):
-        if conf().get('speech_recognition') != True :
+        if conf().get('speech_recognition') != True:
             return
         logger.debug("[WX]receive voice msg: " + msg['FileName'])
         thread_pool.submit(self._do_handle_voice, msg)
@@ -72,8 +72,8 @@ class WechatChannel(Channel):
 
     def _handle_single_msg(self, msg, content):
         from_user_id = msg['FromUserName']
-        to_user_id = msg['ToUserName']              # 接收人id
-        other_user_id = msg['User']['UserName']     # 对手方id
+        to_user_id = msg['ToUserName']  # 接收人id
+        other_user_id = msg['User']['UserName']  # 对手方id
         match_prefix = self.check_prefix(content, conf().get('single_chat_prefix'))
         if "」\n- - - - - - - - - - - - - - -" in content:
             logger.debug("[WX]reference query skipped")
@@ -89,7 +89,7 @@ class WechatChannel(Channel):
             if img_match_prefix:
                 content = content.split(img_match_prefix, 1)[1].strip()
                 thread_pool.submit(self._do_send_img, content, from_user_id)
-            else :
+            else:
                 thread_pool.submit(self._do_send_text, content, from_user_id)
         elif to_user_id == other_user_id and match_prefix:
             # 自己给好友发送消息
@@ -102,7 +102,6 @@ class WechatChannel(Channel):
                 thread_pool.submit(self._do_send_img, content, to_user_id)
             else:
                 thread_pool.submit(self._do_send_text, content, to_user_id)
-
 
     def handle_group(self, msg):
         logger.debug("[WX]receive group msg: " + json.dumps(msg, ensure_ascii=False))
@@ -122,9 +121,13 @@ class WechatChannel(Channel):
             logger.debug("[WX]reference query skipped")
             return ""
         config = conf()
-        match_prefix = (msg['IsAt'] and not config.get("group_at_off", False)) or self.check_prefix(origin_content, config.get('group_chat_prefix')) \
+        match_prefix = (msg['IsAt'] and not config.get("group_at_off", False)) or self.check_prefix(origin_content,
+                                                                                                    config.get(
+                                                                                                        'group_chat_prefix')) \
                        or self.check_contain(origin_content, config.get('group_chat_keyword'))
-        if ('ALL_GROUP' in config.get('group_name_white_list') or group_name in config.get('group_name_white_list') or self.check_contain(group_name, config.get('group_name_keyword_white_list'))) and match_prefix:
+        if ('ALL_GROUP' in config.get('group_name_white_list') or group_name in config.get(
+                'group_name_white_list') or self.check_contain(group_name, config.get(
+                'group_name_keyword_white_list'))) and match_prefix:
             img_match_prefix = self.check_prefix(content, conf().get('image_create_prefix'))
             if img_match_prefix:
                 content = content.split(img_match_prefix, 1)[1].strip()
@@ -203,13 +206,11 @@ class WechatChannel(Channel):
             reply_text = '@' + msg['ActualNickName'] + ' ' + reply_text.strip()
             self.send(conf().get("group_chat_reply_prefix", "") + reply_text, group_id)
 
-
     def check_prefix(self, content, prefix_list):
         for prefix in prefix_list:
             if content.startswith(prefix):
                 return prefix
         return None
-
 
     def check_contain(self, content, keyword_list):
         if not keyword_list:
@@ -218,4 +219,3 @@ class WechatChannel(Channel):
             if content.find(ky) != -1:
                 return True
         return None
-

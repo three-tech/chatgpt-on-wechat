@@ -1,20 +1,22 @@
-
 """
 baidu voice service
 """
 import time
+
 from aip import AipSpeech
+
 from common.log import logger
 from common.tmp_dir import TmpDir
-from voice.voice import Voice
 from config import conf
+from voice.voice import Voice
+
 
 class BaiduVoice(Voice):
     APP_ID = conf().get('baidu_app_id')
     API_KEY = conf().get('baidu_api_key')
     SECRET_KEY = conf().get('baidu_secret_key')
     client = AipSpeech(APP_ID, API_KEY, SECRET_KEY)
-    
+
     def __init__(self):
         pass
 

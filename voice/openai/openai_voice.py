@@ -1,11 +1,10 @@
-
 """
 google voice service
 """
-import json
 import openai
-from config import conf
+
 from common.log import logger
+from config import conf
 from voice.voice import Voice
 
 

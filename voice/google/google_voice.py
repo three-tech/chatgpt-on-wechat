@@ -1,13 +1,13 @@
-
 """
 google voice service
 """
 
-import pathlib
 import subprocess
 import time
-import speech_recognition
+
 import pyttsx3
+import speech_recognition
+
 from common.log import logger
 from common.tmp_dir import TmpDir
 from voice.voice import Voice
