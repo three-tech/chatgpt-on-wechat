@@ -1,5 +1,5 @@
 {
-  "open_ai_api_key": "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",
+  "open_ai_api_key": "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",
   "open_ai_api_base":"https://api.openai.com/v1",
   "proxy": "",
   "single_chat_prefix": [""],
